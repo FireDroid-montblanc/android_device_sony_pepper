@@ -6,9 +6,9 @@ USE_CAMERA_STUB := true
 #inherit from the common montblanc definitions
 -include device/sony/montblanc-common/BoardConfigCommon.mk
 
-TARGET_KERNEL_CONFIG := cyanogen_pepper_defconfig
+TARGET_SPECIFIC_HEADER_PATH += device/sony/pepper/include
 
-WITH_DEXPREOPT := true
+TARGET_KERNEL_CONFIG := cyanogen_pepper_defconfig
 
 # Partition information
 BOARD_VOLD_MAX_PARTITIONS := 16
@@ -23,7 +23,7 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_FORCE_KERNEL_ADDRESS  := 0x00008000
 BOARD_FORCE_RAMDISK_ADDRESS := 0x01000000
 
-COMMON_GLOBAL_CFLAGS += -DBUTTON_BACKLIGHT -DNO_BLINK
+COMMON_GLOBAL_CFLAGS += -DNEW_NOTIFICATION
 
 BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_USERIMAGES_USE_EXT4 := true
