@@ -7,10 +7,6 @@ bin/psccd
 bin/simd
 bin/admsrv
 bin/modem-supervisor
-<<<<<<< HEAD
-=======
-bin/chargemon
->>>>>>> upstream/ics
 bin/updatemiscta
 bin/cspsa2nwm
 bin/cops_cmd
@@ -33,10 +29,6 @@ bin/ste_omxil_test
 bin/system_monitor
 bin/taimport
 bin/wait4tad
-<<<<<<< HEAD
-bin/illumination_service
-=======
->>>>>>> upstream/ics
 bin/blue-up.sh
 bin/at_core
 bin/cspsa-cmd
