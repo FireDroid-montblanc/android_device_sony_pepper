@@ -40,6 +40,7 @@ PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_COPY_FILES += \
    device/sony/montblanc-common/prebuilt/logo-480x854.rle:root/logo.rle
 
+<<<<<<< HEAD
 # Dual recovery and ramdisk for stock kernel
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/charger:system/bin/charger \
@@ -49,6 +50,8 @@ PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/ramdisk.tar:system/bin/ramdisk.tar \
    $(LOCAL_PATH)/prebuilt/sh:system/xbin/sh
 
+=======
+>>>>>>> upstream/ics
 # Configuration scripts
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/config/dash.conf:system/etc/dash.conf \

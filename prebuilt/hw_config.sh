@@ -15,10 +15,13 @@ echo "in_progress" > /data/ttsp_fw_update
 cyttsp_fwloader -dev $dev -fw /system/etc/firmware/ttsp_fw.hex $flags
 echo "done" > /data/ttsp_fw_update
 
+<<<<<<< HEAD
 #Fix wifi for stock kernel(thanks to: dapaua)
 rm -r /data/system/wpa_supplicant
 killall wpa_supplicant
 
+=======
+>>>>>>> upstream/ics
 # Audio jack configuration
 dev=/sys/devices/platform/simple_remote.0
 echo 0,301,1901 > $dev/accessory_min_vals
