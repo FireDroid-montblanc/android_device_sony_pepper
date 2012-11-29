@@ -3,7 +3,6 @@
 # Chargemon script for Xperia Sola
 # Included:
 #     - CWM6 (ics) recovery
-#     - CWM5 touch recovery (thanks to munjeni)
 #     - Boot to FireDroid with custom ramdisk
 # atis112@xda
 ############# ############# #############
@@ -31,45 +30,9 @@
 	cd /
 	rm -r /sbin /sdcard
 	rm -f etc init* uevent* default*
-	if [ -f /system/bin/cwm-ics.tar ]
+	if [ -f /system/bin/recovery.tar ]
 	then
-		tar -xf /system/bin/cwm-ics.tar
-	fi
-
-	# Umount /system
-	umount -l /dev/block/mmcblk0p10
-
-	# chroot
-	chroot / /init
-
-	fi
-
-	############# ############# #############
-	# Boot to cwm-touch
-	############# ############# #############
-	cat /dev/input/event2 > /dev/keycheck&
-	sleep 3
-	kill -9 $!
-	if [ -s /dev/keycheck -o -e /cache/recovery/boot ]
-	then
-
-	rm /cache/recovery/boot
-
-	# remount rootfs rw
-	mount -o remount,rw rootfs /
-
-	# Umount eMMCs
-	umount -l /dev/block/mmcblock0p10
-	umount -l /dev/block/mmcblock0p11
-	umount -l /dev/block/mmcblock0p12
-
-	# Mount recovery
-	cd /
-	rm -r /sbin /sdcard
-	rm -f etc init* uevent* default*
-	if [ -f /system/bin/cwm-touch.tar ]
-	then
-		tar -xf /system/bin/cwm-touch.tar
+		tar -xf /system/bin/recovery.tar
 	fi
 
 	# Umount /system
@@ -104,8 +67,6 @@
 	umount -l /cache
 	umount -l /mnt/sdcard
 	umount -l /sdcard
-	rm -r /mnt/sdcard
-	mkdir /tmp
 
 	# chroot
 	chroot / /init

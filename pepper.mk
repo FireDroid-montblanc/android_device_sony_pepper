@@ -40,12 +40,10 @@ PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_COPY_FILES += \
    device/sony/montblanc-common/prebuilt/logo-480x854.rle:root/logo.rle
 
-# Dual recovery and ramdisk for stock kernel
+# Recovery and ramdisk for stock kernel
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/prebuilt/charger:system/bin/charger \
    $(LOCAL_PATH)/prebuilt/chargemon:system/bin/chargemon \
-   $(LOCAL_PATH)/prebuilt/cwm-ics.tar:system/bin/cwm-ics.tar \
-   $(LOCAL_PATH)/prebuilt/cwm-touch.tar:system/bin/cwm-touch.tar \
+   $(LOCAL_PATH)/recovery/recovery.tar:system/bin/recovery.tar \
    $(LOCAL_PATH)/prebuilt/ramdisk.tar:system/bin/ramdisk.tar \
    $(LOCAL_PATH)/prebuilt/sh:system/xbin/sh
 
@@ -64,8 +62,6 @@ PRODUCT_COPY_FILES += \
 
 # Recovery bootstrap (device-specific part)
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/recovery/bootrec-device:root/sbin/bootrec-device \
-   $(LOCAL_PATH)/recovery/bootrec-device-fs:root/sbin/bootrec-device-fs \
    $(LOCAL_PATH)/recovery.fstab:root/recovery.fstab
 
 # Key layouts and touchscreen
