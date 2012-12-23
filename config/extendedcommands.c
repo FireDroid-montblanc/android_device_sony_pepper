@@ -123,7 +123,7 @@ void show_install_update_menu()
                                 "",
                                 NULL
     };
-    
+
     char* install_menu_items[] = {  "choose zip from sdcard",
                                     "apply /sdcard/update.zip",
                                     "toggle signature verification",
@@ -139,7 +139,7 @@ void show_install_update_menu()
         other_sd = "/external_sd/";
         install_menu_items[3] = "choose zip from external sdcard";
     }
-    
+
     for (;;)
     {
         int chosen_item = get_menu_selection(headers, install_menu_items, 0, 0);
@@ -516,11 +516,11 @@ int control_usb_storage_for_lun(Volume* vol, bool enable) {
         const char *lun_file = lun_files[i];
         for(lun_num = 0; lun_num < LUN_FILE_EXPANDS; lun_num++) {
             char formatted_lun_file[255];
-    
+
             // Replace %d with the LUN number
             bzero(formatted_lun_file, 255);
             snprintf(formatted_lun_file, 254, lun_file, lun_num);
-    
+
             // Attempt to use the LUN file
             if (control_usb_storage_set_lun(vol, enable, formatted_lun_file) == 0) {
                 return 0;
@@ -591,7 +591,7 @@ void show_mount_usb_storage_menu(void)
                     LOGE("Unable to open ums lunfile (%s)", strerror(errno));
                     return -1;
                 }
-            
+
                 if ((write(fd, vol->device, strlen(vol->device)) < 0) &&
                     (!vol->device2 || (write(fd, vol->device, strlen(vol->device2)) < 0))) {
                     LOGE("Unable to write to ums lunfile (%s)", strerror(errno));
@@ -605,21 +605,21 @@ void show_mount_usb_storage_menu(void)
                                             "",
                                             NULL
                 };
-            
+
                 static char* list[] = { "Unmount", NULL };
-            
+
                 for (;;)
                 {
                     int chosen_item = get_menu_selection(headers, list, 0, 0);
                     if (chosen_item == GO_BACK || chosen_item == 0)
                         break;
                 }
-            
+
                 if ((fd = open(BOARD_UMS_LUNFILE, O_WRONLY)) < 0) {
                     LOGE("Unable to open ums lunfile (%s)", strerror(errno));
                     return -1;
                 }
-            
+
                 char ch = 0;
                 if (write(fd, &ch, 1) < 0) {
                     LOGE("Unable to write to ums lunfile (%s)", strerror(errno));
@@ -637,7 +637,7 @@ void show_mount_usb_storage_menu(void)
                     LOGE("Unable to open ums lunfile (%s)", strerror(errno));
                     return -1;
                 }
-            
+
                 if ((write(fd, vol->device, strlen(vol->device)) < 0) &&
                     (!vol->device2 || (write(fd, vol->device, strlen(vol->device2)) < 0))) {
                     LOGE("Unable to write to ums lunfile (%s)", strerror(errno));
@@ -651,21 +651,21 @@ void show_mount_usb_storage_menu(void)
                                             "",
                                             NULL
                 };
-            
+
                 static char* list[] = { "Unmount", NULL };
-            
+
                 for (;;)
                 {
                     int chosen_item = get_menu_selection(headers, list, 0, 0);
                     if (chosen_item == GO_BACK || chosen_item == 0)
                         break;
                 }
-            
+
                 if ((fd = open(BOARD_UMS_LUNFILE_INT, O_WRONLY)) < 0) {
                     LOGE("Unable to open ums lunfile (%s)", strerror(errno));
                     return -1;
                 }
-            
+
                 char ch = 0;
                 if (write(fd, &ch, 1) < 0) {
                     LOGE("Unable to write to ums lunfile (%s)", strerror(errno));
@@ -747,7 +747,7 @@ int format_device(const char *device, const char *path, const char *fs_type) {
         }
         return 0;
     }
- 
+
     if (strcmp(v->mount_point, path) != 0) {
         return format_unknown_device(v->device, path, NULL);
     }
@@ -1052,7 +1052,7 @@ void show_nandroid_advanced_restore_menu(const char* path)
                             "Restore wimax",
                             NULL
     };
-    
+
     if (0 != get_partition_device("wimax", tmp)) {
         // disable wimax restore option
         list[5] = NULL;
@@ -1328,7 +1328,7 @@ int can_partition(const char* volume) {
         LOGI("Can't partition unsafe device: %s\n", vol->device);
         return 0;
     }
-    
+
     if (strcmp(vol->fs_type, "vfat") != 0) {
         LOGI("Can't partition non-vfat: %s\n", vol->fs_type);
         return 0;
@@ -1485,13 +1485,13 @@ int bml_check_volume(const char *path) {
         ensure_path_unmounted(path);
         return 0;
     }
-    
+
     Volume *vol = volume_for_path(path);
     if (vol == NULL) {
         LOGE("Unable process volume! Skipping...\n");
         return 0;
     }
-    
+
     ui_print("%s may be rfs. Checking...\n", path);
     char tmp[PATH_MAX];
     sprintf(tmp, "mount -t rfs %s %s", vol->device, path);
@@ -1520,12 +1520,12 @@ void process_volumes() {
     if (has_datadata())
         ret |= bml_check_volume("/datadata");
     ret |= bml_check_volume("/cache");
-    
+
     if (ret == 0) {
         ui_print("Done!\n");
         return;
     }
-    
+
     char backup_path[PATH_MAX];
     time_t t = time(NULL);
     char backup_name[PATH_MAX];
