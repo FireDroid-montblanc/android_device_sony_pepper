@@ -7,7 +7,6 @@ bin/psccd
 bin/simd
 bin/admsrv
 bin/modem-supervisor
-bin/chargemon
 bin/updatemiscta
 bin/cspsa2nwm
 bin/cops_cmd
