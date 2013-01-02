@@ -89,6 +89,13 @@ loglevel 3
     # 5.0 %
     write /dev/cpuctl/bg_non_interactive/cpu.shares 52
 
+    mkdir /dev/cpuctl/apps
+    mkdir /dev/cpuctl/apps/bg_non_interactive
+    chown system system /dev/cpuctl/apps/tasks
+    chown system system /dev/cpuctl/apps/bg_non_interactive/tasks
+    chmod 0777 /dev/cpuctl/apps/tasks
+    chmod 0777 /dev/cpuctl/apps/bg_non_interactive/tasks
+
 # Allow everybody to read the xt_qtaguid resource tracking misc dev.
 # This is needed by any process that uses socket tagging.
     chmod 0644 /dev/xt_qtaguid
@@ -425,6 +432,7 @@ service netd /system/bin/netd
     class main
     socket netd stream 0660 root system
     socket dnsproxyd stream 0660 root inet
+    socket mdns stream 0660 root system
 
 service debuggerd /system/bin/debuggerd
     class main
@@ -513,6 +521,14 @@ service keystore /system/bin/keystore /data/misc/keystore
 service dumpstate /system/bin/dumpstate -s
     class main
     socket dumpstate stream 0660 shell log
+    disabled
+    oneshot
+
+service mdnsd /system/bin/mdnsd
+    class main
+    user mdnsr
+    group inet net_raw
+    socket mdnsd stream 0660 mdnsr inet
     disabled
     oneshot
 

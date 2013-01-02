@@ -7,7 +7,6 @@ on init
 
     # create mountpoints
     mkdir /mnt/sdcard 0000 system system
-    symlink /mnt/sdcard /sdcard
 
     mkdir /modemfs 0771 system system
 
@@ -24,44 +23,19 @@ on init
 
     # setup the global environment
     export EXTERNAL_STORAGE /mnt/sdcard
-    export SECONDARY_STORAGE /mnt/ext_card
+    export SECONDARY_STORAGE /mnt/external_sd
     export EXTERNAL_STORAGE_USB /mnt/usbdisk
 
     # create symlink
     # Create mountpoint for USB disk
-    mkdir /mnt/ext_card 0000 system system
+    mkdir /mnt/external_sd 0000 system system
     mkdir /mnt/usbdisk 0000 system system
 
     # Create symlink
     symlink /mnt/sdcard /sdcard
-    symlink /mnt/ext_card /ext_card
+    symlink /mnt/external_sd
+    mkdir /external_sd 0000 system system
     symlink /mnt/usbdisk /usbdisk
-
-    # make files in /sys/ non-writable for OTHERS
-    chmod 220 /sys/ab8500_chargalg/chargalg
-    chown system system /sys/ab8500_chargalg/chargalg
-    chmod 664 /sys/devices/sensor00/fn54/fifoindexhi
-    chmod 664 /sys/devices/sensor00/fn54/fifoindexlo
-    chmod 664 /sys/devices/sensor00/fn54/control
-    chmod 664 /sys/devices/sensor00/fn54/cmd
-    chmod 664 /sys/devices/sensor00/fn54/reporttype
-    chmod 220 /sys/devices/sensor00/fn34/rescanPDT
-    chmod 664 /sys/devices/sensor00/fn34/blocknum
-    chmod 664 /sys/devices/sensor00/fn34/cmd
-    chmod 664 /sys/devices/sensor00/fn34/bootloaderid
-    chmod 664 /sys/devices/sensor00/fn34/data
-    chmod 664 /sys/devices/sensor00/fn11/relreport
-    chmod 664 /sys/devices/sensor00/fn11/swap
-    chmod 664 /sys/devices/sensor00/fn11/offset
-    chmod 664 /sys/devices/sensor00/fn11/clip
-    chmod 664 /sys/devices/sensor00/fn11/flip
-    chmod 220 /sys/devices/sensor00/fn01/reset
-    chmod 664 /sys/devices/sensor00/fn01/reportrate
-    chmod 664 /sys/devices/sensor00/fn01/nosleep
-    chmod 664 /sys/devices/sensor00/fn01/chargerinput
-    chmod 664 /sys/devices/sensor00/fn01/sleepmode
-    chmod 664 /sys/devices/sensor00/enabled
-    chmod 664 /sys/devices/sensor00/bsr
 
     # chown for sim detect
     chown root radio /sys/class/sim_card/sim_status
@@ -96,7 +70,6 @@ on fs
     mkdir /datadata 0755 system system
     mkdir /mnt/sdcard 0000 system system
 
-    start cspsa
 
     # SEMC: Start the TrimArea Daemon and early TA-users
     class_start trimarea
@@ -201,7 +174,11 @@ on post-fs-data
 
 on early-boot
     #start recovery
+    stop tad
+    write /sys/devices/platform/ab8500-i2c.0/ab8500-usb.0/boot_time_device 1
     exec /sbin/bootrec
+    start tad
+
     start cspsa
 
     # STE: Launch core services in case charging mode is entered
@@ -302,6 +279,25 @@ on boot
     chown system system /sys/bus/i2c/devices/2-0053/privacy_enable
     chown system system /sys/bus/i2c/devices/2-0053/privacy_current
 
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/pattern_data
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/pattern_delay
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/pattern_duration_secs
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/l-key-red/use_pattern
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/l-key-green/use_pattern
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/l-key-blue/use_pattern
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/m-key-red/use_pattern
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/m-key-green/use_pattern
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/m-key-blue/use_pattern
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/r-key-red/use_pattern
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/r-key-green/use_pattern
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/r-key-blue/use_pattern
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/pwr-red/use_pattern
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/pwr-green/use_pattern
+    chown system system /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/pwr-blue/use_pattern
+
+    chmod 666 /sys/devices/av8100_hdmi.3/disponoff
+    chmod 666 /sys/devices/av8100_hdmi.3/hdmisdtvswitch
+
     # SEMC: USB Host support
     mkdir /dev/bus/ 0711 system system
     mkdir /dev/bus/usb 0711 system system
@@ -392,7 +388,7 @@ service wpa_supplicant /system/bin/wpa_supplicant -Dnl80211 -iwlan0
     disabled
     oneshot
 
-service hostapd /system/bin/hostapd -dddd /data/misc/wifi/hostapd.conf
+service hostapd_bin /system/bin/hostapd -dddd /data/misc/wifi/hostapd.conf
     class main
     socket wpa_wlan1 dgram 660 wifi wifi
     disabled
@@ -544,23 +540,3 @@ service batcap /system/bin/batcap
     user root
     oneshot
 
-# Start suntrold
-#service suntrold /system/bin/suntrold
-#    user system
-#    group system
-#    oneshot
-
-# SEMC System monitor
-#service system_monitor /system/bin/system_monitor
-#    user root
-
-#service illumination /system/bin/illumination_service
-#    class main
-#    user root
-
-#service pand /system/bin/pand -s -n -M -A -E -r NAP -u /system/bin/blue-up.sh
-#    class main
-#    user root
-#    group bluetooth net_bt_admin misc
-#    disabled
-#    oneshot
