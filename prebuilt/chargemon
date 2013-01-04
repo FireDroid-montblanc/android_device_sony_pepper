@@ -53,20 +53,13 @@
 	umount -l /dev/block/mmcblock0p10
 	umount -l /dev/block/mmcblock0p11
 	umount -l /dev/block/mmcblock0p12
+	umount -l /data
 
 	# Mount ramdisk
 	cd /
 	rm -r /sbin /sdcard
 	rm -f etc init* uevent* default*
 	tar -xf /system/bin/ramdisk.tar
-
-	# Fix permissions
-	mount -o remount,rw rootfs /
-	umount -l /system
-	umount -l /data
-	umount -l /cache
-	umount -l /mnt/sdcard
-	umount -l /sdcard
 
 	# chroot
 	chroot / /init
