@@ -43,7 +43,6 @@ PRODUCT_COPY_FILES += \
 # Recovery and ramdisk for stock kernel
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/chargemon:system/bin/chargemon \
-   $(LOCAL_PATH)/recovery/recovery.tar:system/bin/recovery.tar \
    $(LOCAL_PATH)/prebuilt/ramdisk.tar:system/bin/ramdisk.tar \
    $(LOCAL_PATH)/prebuilt/sh:system/xbin/sh
 
